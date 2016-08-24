@@ -87,9 +87,22 @@ namespace WebApplication.Controllers
             {
                 return NotFound();
             }
+
             return new ObjectResult(c);
         }
 
+        [HttpDelete("{did}")]
+        public IActionResult Delete(string did)
+        {
+            Course c = _courses.Find(x => x.ID == Int32.Parse(did));
+            if (c == null)
+            {
+                return NotFound();
+            }
+            
+            _courses.Remove(c);
+            return new NoContentResult();
+        }
         [HttpPost]
         public IActionResult Create(Course c)
         {
@@ -97,11 +110,9 @@ namespace WebApplication.Controllers
             {
                 return BadRequest();
             }
-            else
-            {
-                _courses.Add(c);
-                return CreatedAtRoute("GetCourses","" ,_courses);
-            }
+
+            _courses.Add(c);
+            return CreatedAtRoute("GetCourses","" ,_courses);
         }
 
         [HttpPut("{cid}")]
@@ -110,17 +121,19 @@ namespace WebApplication.Controllers
             Console.WriteLine(c.TemplateID + c.Name);
             int courseID = Int32.Parse(cid);
             Console.WriteLine(courseID);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
             Course updatedCourse = _courses.Find(x => x.ID == courseID);
+
             if (updatedCourse == null)
             {
                 return NotFound();
             }
-            
+
             updatedCourse.ID = c.ID;
             updatedCourse.Name = c.Name;
             updatedCourse.TemplateID = c.TemplateID;
