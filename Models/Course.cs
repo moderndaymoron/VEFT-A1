@@ -20,5 +20,7 @@ namespace WebApplication.Models
         [Required]
         public DateTime EndDate {get; set;}
 
+        public List<Student> Students {get; set;}
+
     }
 }
