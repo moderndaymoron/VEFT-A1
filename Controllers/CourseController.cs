@@ -79,13 +79,13 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet("{id}")]
-        public Course GetCourseByID(string id)
+        public IActionResult GetCourseByID(string id)
         {
             int courseID = Int32.Parse(id);
             Course c = _courses.Find(x => x.ID == courseID);
-            //return ObjectResult(b);
-            return null;
+            return new ObjectResult(c);
         }
+
         [HttpPost]
         public IActionResult Create(Course c)
         {
@@ -106,6 +106,7 @@ namespace WebApplication.Controllers
             int courseID = Int32.Parse(id);
             if (!ModelState.IsValid || courseID != c.ID)
             {
+                Console.WriteLine(c);
                 return BadRequest();
             }
 
@@ -121,16 +122,8 @@ namespace WebApplication.Controllers
             updatedCourse.TemplateID = c.TemplateID;
             updatedCourse.StartDate = c.StartDate;
             updatedCourse.EndDate = c.EndDate;
-            updatedCourse.Students = c.Students;
 
-            // or
-
-            //updatedCourse = c;
-
-
-            return null;
-
-            // update the values of the course with the given properties in c
+            return new NoContentResult();
         }
     }
 }
