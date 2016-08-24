@@ -83,6 +83,10 @@ namespace WebApplication.Controllers
         {
             int courseID = Int32.Parse(id);
             Course c = _courses.Find(x => x.ID == courseID);
+            if (c == null)
+            {
+                return NotFound();
+            }
             return new ObjectResult(c);
         }
 
@@ -100,24 +104,24 @@ namespace WebApplication.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(string id, Course c)
+        [HttpPut("{cid}")]
+        public IActionResult Update(string cid, Course c)
         {
-            int courseID = Int32.Parse(id);
-            if (!ModelState.IsValid || courseID != c.ID)
+            Console.WriteLine(c.TemplateID + c.Name);
+            int courseID = Int32.Parse(cid);
+            Console.WriteLine(courseID);
+            if (!ModelState.IsValid)
             {
-                Console.WriteLine(c);
                 return BadRequest();
             }
 
-            bool courseExist = _courses.Any(x=> x.ID == courseID);
-            if (!courseExist)
+            Course updatedCourse = _courses.Find(x => x.ID == courseID);
+            if (updatedCourse == null)
             {
                 return NotFound();
             }
-
-            Course updatedCourse = _courses.Find(x => x.ID == courseID);
-            updatedCourse.ID = courseID;
+            
+            updatedCourse.ID = c.ID;
             updatedCourse.Name = c.Name;
             updatedCourse.TemplateID = c.TemplateID;
             updatedCourse.StartDate = c.StartDate;
