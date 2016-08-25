@@ -56,17 +56,34 @@ namespace WebApplication.Controllers
                             {
                                 SSN = "1306872539",
                                 Name = "Ragnar Ingi Ragnarsson"
+                            },
+                            new Student
+                            {
+                                SSN = "0307843249",
+                                Name = "Eiríkur Birkir Ragnarsson"
+                            },
+                            new Student
+                            {
+                                SSN = "1306652539",
+                                Name = "Jose rodriguez"
                             }
                         }
                     },
                     new Course
                     {
                         ID         = 3,
-                        Name       = "How to rock hard",
-                        TemplateID = "T-123-TOOL",
+                        Name       = "History of Jeff Lynne - Don't bring me down",
+                        TemplateID = "T-FAN-ELO1",
                         StartDate  = DateTime.Now.AddMonths(12),
                         EndDate    = DateTime.Now.AddMonths(15),
-                        Students   = null
+                        Students   = new List<Student>
+                        {
+                            new Student
+                            {
+                                SSN = "0101750009",
+                                Name = "Dabs"
+                            }
+                        }
                     }
                 };
             }
@@ -126,6 +143,40 @@ namespace WebApplication.Controllers
             updatedCourse.TemplateID = c.TemplateID;
             updatedCourse.StartDate = c.StartDate;
             updatedCourse.EndDate = c.EndDate;
+
+            return new NoContentResult();
+        }
+
+        [HttpGet("{id}/students")]
+        public IActionResult GetStundentsByCourse(String id) 
+        {
+            int courseID = Int32.Parse(id);
+            Course c = _courses.Find(x => x.ID == courseID);
+            if (c == null)
+            {
+                return NotFound();
+            }
+            return Json(c.Students);
+        }
+        
+        [HttpPut("{cid}/students")]
+        public IActionResult AddStudentToCourse(String cid, Student s) 
+        {
+            Console.WriteLine(s.SSN + s.Name);
+            int courseID = Int32.Parse(cid);
+            Console.WriteLine(courseID);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            Course updatedCourse = _courses.Find(x => x.ID == courseID);
+            if (updatedCourse == null)
+            {
+                return NotFound();
+            }
+            
+            updatedCourse.Students.Add(s);
 
             return new NoContentResult();
         }
