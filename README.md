@@ -2,7 +2,7 @@
 # How to use the api #
 
 Get a list of courses       ->  http://localhost:5000/api/courses               GET
-Add a course                ->  http://localhost:5000/api/courses/1             POST
+Add a course                ->  http://localhost:5000/api/courses             POST
 Update a course             ->  http://localhost:5000/api/courses/1             PUT
 Delete a course             ->  http://localhost:5000/api/courses/1             DELETE
 Get a course by id          ->  http://localhost:5000/api/courses/1             GET

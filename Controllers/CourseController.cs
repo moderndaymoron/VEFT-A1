@@ -72,12 +72,14 @@ namespace WebApplication.Controllers
             }
         }
 
+        // GET /api/courses
         [HttpGet(Name="GetCourses")]
         public List<Course> GetCourses()
         {
             return _courses;
         }
 
+        // GET /api/courses/1
         [HttpGet("{id}")]
         public IActionResult GetCourseByID(string id)
         {
@@ -91,6 +93,7 @@ namespace WebApplication.Controllers
             return new ObjectResult(c);
         }
 
+        // DELETE /api/courses/1
         [HttpDelete("{did}")]
         public IActionResult Delete(string did)
         {
@@ -103,6 +106,8 @@ namespace WebApplication.Controllers
             _courses.Remove(c);
             return new NoContentResult();
         }
+
+        // POST /api/courses
         [HttpPost]
         public IActionResult Create(Course c)
         {
@@ -115,6 +120,7 @@ namespace WebApplication.Controllers
             return CreatedAtRoute("GetCourses","" ,_courses);
         }
 
+        // PUT /api/courses/1
         [HttpPut("{cid}")]
         public IActionResult Update(string cid, Course c)
         {
